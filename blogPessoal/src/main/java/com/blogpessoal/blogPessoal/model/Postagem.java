@@ -1,11 +1,14 @@
 package com.blogpessoal.blogPessoal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity //Transformando a class em uma entidade
 @Table(name = "tb_postagens") //Setando a class na tabela no mysql
@@ -25,6 +28,22 @@ public class Postagem {
 
     @UpdateTimestamp //Para atualizar a data de postagem na inrterface
     private LocalDateTime data;
+
+    //Key Estrangeira’’
+    @ManyToOne //muitas postagem para um tema
+    @JsonIgnoreProperties("postagens") //para não entrar em loop, para que somente um traga o tema.
+//    @JoinColumn(name = "postagem_id", nullable = true)
+    private Tema tema;
+
+    @ManyToOne
+    @JsonIgnoreProperties("postagens")
+    private Usuario usuario;
+
+//    public Postagem(String titulo, String texto, LocalDateTime data, Tema tema){
+//        this.titulo = titulo;
+//        this.texto = texto;
+//        this.data = data;
+//    }
 
     public Long getId() {
         return id;
@@ -56,5 +75,21 @@ public class Postagem {
 
     public void setData(LocalDateTime data) {
         this.data = data;
+    }
+
+    public Tema getTema() {
+        return tema;
+    }
+
+    public void setTema(Tema tema) {
+        this.tema = tema;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }
