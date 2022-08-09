@@ -1,13 +1,16 @@
 package com.blogpessoal.blogPessoal.repository;
 
+import com.blogpessoal.blogPessoal.model.Tema;
 import com.blogpessoal.blogPessoal.model.Usuario;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface UsuarioRepository {
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    public List<Usuario> findAllByUsuarioContainingIgnoreCase(@Param("usuario") String usuario);
+    public List<Usuario> findByUsuario (String usuario);
+
+    //PARAM reconhece a URI => http:localhost:8089/usuario/{usuario}
 }

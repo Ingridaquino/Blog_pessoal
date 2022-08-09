@@ -27,7 +27,7 @@ public class Usuario {
     @Size(min = 3, max = 255)
     private String senha;
 
-    @Size(min = 3, max = 500)
+    @Size(min = 3, max = 500) //TODO colocar message
     private String foto;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
