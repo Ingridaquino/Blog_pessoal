@@ -2,7 +2,9 @@ package com.blogpessoal.blogPessoal.controller;
 
 
 import com.blogpessoal.blogPessoal.model.Usuario;
+import com.blogpessoal.blogPessoal.model.UsuarioLogin;
 import com.blogpessoal.blogPessoal.repository.UsuarioRepository;
+import com.blogpessoal.blogPessoal.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +21,12 @@ import java.util.Optional;
 public class UsuarioController {
 
     @Autowired
+    private UsuarioService service;
+
+    @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Usuario>> getAll(){
         return ResponseEntity.ok(usuarioRepository.findAll());
 
@@ -34,33 +39,26 @@ public class UsuarioController {
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/usuario/{usuario}")
-    public ResponseEntity<List<Usuario>> getByUsuario(@PathVariable String usuario){
-        return ResponseEntity.ok(usuarioRepository.findByUsuario(usuario));
+    @PostMapping("/logar")
+    public ResponseEntity<UsuarioLogin> autenticationUsuario(
+            @RequestBody Optional<UsuarioLogin> usuario) {
+        return service.logarUsuario(usuario)
+                .map(resp -> ResponseEntity.ok(resp))
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
-    @PostMapping
-    public ResponseEntity<Usuario> post(@Valid @RequestBody Usuario usuario){
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(usuarioRepository.save(usuario));
+    @PostMapping("/cadastrar")
+    public ResponseEntity<Usuario> postUsuario(
+            @Valid @RequestBody Usuario usuario) {
+        return service.cadastrarUsuario(usuario)
+                .map(resp -> ResponseEntity.status(HttpStatus.CREATED).body(resp))
+                .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
     }
-
-    @PutMapping
-    public ResponseEntity<Usuario> put(@Valid @RequestBody Usuario usuario){
-        return usuarioRepository.findById(usuario.getId())
-                .map(resposta -> ResponseEntity.status(HttpStatus.OK)
-                        .body(usuarioRepository.save(usuario)))
+    @PutMapping("/atualizar")
+    public ResponseEntity<Usuario> putUsuario(
+            @Valid @RequestBody Usuario usuario){
+        return service.atualizarUsuario(usuario)
+                .map(resp -> ResponseEntity.status(HttpStatus.OK).body(resp))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
-
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-
-        if(usuario.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-        usuarioRepository.deleteById(id);
     }
 }

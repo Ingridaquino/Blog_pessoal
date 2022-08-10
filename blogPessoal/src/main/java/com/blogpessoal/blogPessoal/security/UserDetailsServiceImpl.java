@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.List;
+
 import java.util.Optional;
 
 /**
@@ -52,7 +52,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
          * que foi assinado na interface UsuarioRepository
          */
 
-        Optional <Usuario> usuario = userRepository.findByUsuario(userName);
+        Optional<Usuario> usuario = userRepository.findByUsuario(userName);
 
         /**
          * Se o usuário não existir, o método lança uma Exception do tipo UsernameNotFoundException.
