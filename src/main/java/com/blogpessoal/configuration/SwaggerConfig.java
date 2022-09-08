@@ -15,20 +15,21 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 @Configuration
 public class SwaggerConfig {
 
+	@Bean
 	public OpenAPI springBlogPessoalOpenAPI () {
 		return new OpenAPI().info(new Info().title("Blog Pessoal")
 		.description("Projeto Blog Pessoal - Generation Brasil")
 		.version("v0.0.1")
-	.license(new License()
-		.name("Generation Brasil")
-		.url("https://brazil.generation.org/"))
-	.contact(new Contact()
-		.name("Samy de Simoni Souza")
-		.url("https://www.linkedin.com/in/samy-de-simoni-souza-39945623a/")
-		.email("sssouza.samy@gmail.com")))
-	.externalDocs(new ExternalDocumentation()
-		.description("Github")
-		.url("https://github.com/Samydesimoni"));
+		.license(new License()
+				.name("Generation Brasil")
+				.url("https://brazil.generation.org/"))
+		.contact(new Contact()
+				.name("Ingrid - Linkedin")
+				.url("https://www.linkedin.com/in/ingrid-aquino-88a8b9147/")
+				.email("ingridaquinosoares@gmail.com")))
+		.externalDocs(new ExternalDocumentation()
+				.description("Github")
+				.url("https://github.com/Ingridaquino/"));
 
 	}
 	
@@ -56,8 +57,5 @@ public class SwaggerConfig {
 		return new ApiResponse().description(message);
 
 	}
-	
-
-		
-	}
+}
 
